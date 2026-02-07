@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo, useEffect } from 'react';
 import { Game, GameCategory } from './types';
 import { GAMES, CATEGORIES } from './constants';
@@ -98,17 +97,25 @@ const App: React.FC = () => {
             className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-40"
           />
           <div className="relative z-10 px-8 md:px-16 max-w-2xl">
-            <span className="text-indigo-400 font-bold tracking-wider uppercase text-sm mb-4 block">New Release</span>
+            <span className="text-indigo-400 font-bold tracking-wider uppercase text-sm mb-4 block">Hot Topic</span>
             <h2 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight">
-              LEVEL UP YOUR <br/> BREAK TIME.
+              GET A NEW <br/> FREE FRIEND!
             </h2>
             <button 
-              onClick={() => setSelectedGame(GAMES[1])}
+              onClick={() => setSelectedGame(GAMES[0])}
               className="bg-indigo-600 hover:bg-white hover:text-indigo-600 text-white font-bold py-3 px-8 rounded-2xl transition-all shadow-lg shadow-indigo-600/20 active:scale-95"
             >
-              Play Now
+              Meet Them Now
             </button>
           </div>
+        </div>
+
+        {/* Disclaimer Bar */}
+        <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 mb-8 flex items-center space-x-3 text-amber-200">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <span className="text-sm font-medium">some games wont work becus the person who made this is fucking stupid</span>
         </div>
 
         {/* Categories Bar */}
@@ -117,7 +124,7 @@ const App: React.FC = () => {
             {CATEGORIES.map(category => (
               <button
                 key={category}
-                onClick={() => setSelectedCategory(category)}
+                onClick={() => setSelectedCategory(category as GameCategory)}
                 className={`whitespace-nowrap px-6 py-3 rounded-2xl text-sm font-bold transition-all ${
                   selectedCategory === category
                     ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
@@ -210,8 +217,9 @@ const App: React.FC = () => {
               </h1>
             </div>
             
-            <div className="text-slate-500 text-sm">
-              © 2024 Nexus Games Portal. Built for enthusiasts.
+            <div className="text-slate-500 text-sm text-center md:text-left">
+              © 2024 Nexus Games Portal. Built for enthusiasts.<br/>
+              <span className="opacity-50 text-xs italic">some games wont work becus the person who made this is fucking stupid</span>
             </div>
 
             <div className="flex space-x-6 mt-6 md:mt-0">

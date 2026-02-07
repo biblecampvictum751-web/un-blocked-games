@@ -1,12 +1,16 @@
-
 import { GAMES, CATEGORIES, GameCategory } from './constants.js';
+
+// --- Environment Check ---
+const isPortable = !!window.__NEXUS_PORTABLE__;
 
 // --- State Management ---
 let state = {
   searchQuery: '',
   selectedCategory: GameCategory.ALL,
   selectedGameId: null,
-  favorites: JSON.parse(localStorage.getItem('nexus_favorites') || '[]')
+  showDownloadInstructions: false,
+  favorites: JSON.parse(localStorage.getItem('nexus_favorites') || '[]'),
+  randomGameLoadCount: 0
 };
 
 function setState(updates) {
@@ -17,7 +21,46 @@ function setState(updates) {
   render();
 }
 
+// --- Cloaking Logic (about:blank) ---
+window.cloakSite = () => {
+  const win = window.open('about:blank', '_blank');
+  if (!win) {
+    alert('Popup blocked! Please allow popups for cloaking to work.');
+    return;
+  }
+  
+  const doc = win.document;
+  doc.title = 'Classes'; // Stealth title
+  
+  const iframe = doc.createElement('iframe');
+  const style = iframe.style;
+  style.position = 'fixed';
+  style.top = style.bottom = style.left = style.right = 0;
+  style.width = style.height = '100%';
+  style.border = 'none';
+  
+  iframe.src = window.location.href;
+  doc.body.appendChild(iframe);
+  doc.body.style.margin = '0';
+  doc.body.style.padding = '0';
+  doc.body.style.overflow = 'hidden';
+  
+  // Go to a non-suspicious site in the original tab
+  window.location.replace('https://classroom.google.com');
+};
+
 // --- Event Handlers ---
+window.goHome = () => {
+  setState({ 
+    searchQuery: '', 
+    selectedCategory: GameCategory.ALL, 
+    selectedGameId: null,
+    showDownloadInstructions: false,
+    randomGameLoadCount: 0
+  });
+  document.body.style.overflow = 'auto';
+};
+
 window.toggleFavorite = (id) => {
   const newFavorites = state.favorites.includes(id)
     ? state.favorites.filter(fav => fav !== id)
@@ -27,20 +70,93 @@ window.toggleFavorite = (id) => {
 
 window.setCategory = (cat) => setState({ selectedCategory: cat });
 window.handleSearch = (e) => setState({ searchQuery: e.target.value });
+
 window.openGame = (id) => {
-  setState({ selectedGameId: id });
+  setState({ selectedGameId: id, randomGameLoadCount: 0 });
   document.body.style.overflow = 'hidden';
 };
+
 window.closeGame = () => {
-  setState({ selectedGameId: null });
+  setState({ selectedGameId: null, randomGameLoadCount: 0 });
   document.body.style.overflow = 'auto';
 };
+
+window.handleIframeLoad = (id) => {
+  const randomGames = ['basket-random', 'soccer-random', 'volley-random', 'boxing-random'];
+  if (randomGames.includes(id)) {
+    state.randomGameLoadCount++;
+    if (state.randomGameLoadCount > 1) {
+      window.closeGame();
+    }
+  }
+};
+
+window.closeInstructions = () => {
+  setState({ showDownloadInstructions: false });
+};
+
 window.toggleFullScreen = () => {
   const elem = document.getElementById('game-container');
   if (!document.fullscreenElement) {
     elem.requestFullscreen().catch(err => console.error(err));
   } else {
     document.exitFullscreen();
+  }
+};
+
+// --- Download Site Functionality ---
+window.downloadSite = async () => {
+  if (isPortable) return;
+  window.goHome();
+  setState({ showDownloadInstructions: true });
+
+  try {
+    const responseConstants = await fetch('./constants.js');
+    const constantsText = await responseConstants.text();
+    
+    const responseIndex = await fetch('./index.js');
+    let indexText = await responseIndex.text();
+
+    // Remove imports
+    indexText = indexText.replace(/import\s+{[^}]+}\s+from\s+['"].\/constants\.js['"];?/g, '');
+    
+    const standaloneHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Games Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body>
+    <div id="app" class="min-h-screen flex flex-col"></div>
+    <script type="module">
+        window.__NEXUS_PORTABLE__ = true;
+        ${constantsText.replace(/export /g, '')}
+        ${indexText}
+    </script>
+</body>
+</html>`;
+
+    const blob = new Blob([standaloneHtml], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'nexus-games-unblocked.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error('Download failed', err);
   }
 };
 
@@ -98,13 +214,31 @@ function PlayerOverlayTemplate(game) {
         </div>
       </div>
       <div id="game-container" class="flex-1 bg-black flex items-center justify-center overflow-hidden">
-        <iframe src="${game.iframeUrl}" title="${game.title}" class="w-full h-full border-0" allow="autoplay; fullscreen; keyboard" sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin"></iframe>
+        <iframe src="${game.iframeUrl}" title="${game.title}" onload="handleIframeLoad('${game.id}')" class="w-full h-full border-0" allow="autoplay; fullscreen; keyboard" sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin"></iframe>
       </div>
-      <div class="px-6 py-4 bg-slate-900 border-t border-slate-800 hidden md:block">
-        <div class="max-w-4xl mx-auto">
-          <h3 class="text-slate-200 font-semibold mb-1">About the game</h3>
-          <p class="text-slate-400 text-sm leading-relaxed">${game.description}</p>
+    </div>
+  `;
+}
+
+function InstructionsModalTemplate() {
+  if (isPortable || !state.showDownloadInstructions) return '';
+  return `
+    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 animate-in fade-in zoom-in duration-200">
+      <div class="bg-slate-900 border border-slate-700 p-8 rounded-3xl max-w-lg w-full shadow-2xl">
+        <div class="flex items-center space-x-3 mb-6">
+          <div class="bg-indigo-600 p-2 rounded-xl">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+             </svg>
+          </div>
+          <h3 class="text-2xl font-black text-white italic tracking-tight">how to run game:</h3>
         </div>
+        <p class="text-slate-300 text-lg leading-relaxed mb-8">
+          after the downlode is compleat go to websim.com and make a new project with a prompt that says 'make a button that loads this html' and atactch the html if you want you can also upload the project
+        </p>
+        <button onclick="closeInstructions()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-2xl transition-all active:scale-95 shadow-lg shadow-indigo-600/20">
+          Got it!
+        </button>
       </div>
     </div>
   `;
@@ -122,11 +256,10 @@ function render() {
   const selectedGame = GAMES.find(g => g.id === state.selectedGameId);
 
   document.getElementById('app').innerHTML = `
-    <!-- Header -->
     <header class="sticky top-0 z-40 w-full bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
       <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-          <div class="bg-indigo-600 p-2 rounded-lg">
+        <div onclick="goHome()" class="flex items-center space-x-2 cursor-pointer group">
+          <div class="bg-indigo-600 p-2 rounded-lg group-hover:scale-110 transition-transform">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -134,6 +267,7 @@ function render() {
           </div>
           <h1 class="text-2xl font-black text-white tracking-tighter uppercase italic">Nexus<span class="text-indigo-500">Games</span></h1>
         </div>
+        
         <div class="flex-1 max-w-md mx-8 hidden md:block">
           <div class="relative">
             <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
@@ -142,8 +276,22 @@ function render() {
             <input type="text" placeholder="Search for games..." oninput="handleSearch(event)" value="${state.searchQuery}" class="w-full bg-slate-800 border-none text-slate-100 pl-10 pr-4 py-2 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all placeholder:text-slate-500">
           </div>
         </div>
+
         <div class="flex items-center space-x-4">
-          <a href="#" class="text-slate-400 hover:text-white transition-colors">
+          ${!isPortable ? `
+            <button onclick="cloakSite()" title="Incognito Mode" class="p-2 text-slate-400 hover:text-indigo-400 transition-all bg-slate-800 rounded-lg hover:bg-slate-700">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268-2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+              </svg>
+            </button>
+            <button onclick="downloadSite()" title="Download Portable Version" class="flex items-center space-x-2 px-3 py-2 text-slate-400 hover:text-indigo-400 transition-all bg-slate-800 rounded-lg hover:bg-slate-700">
+               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+               </svg>
+               <span class="hidden sm:inline text-sm font-semibold">Riptide</span>
+            </button>
+          ` : ''}
+          <a href="https://github.com" target="_blank" class="text-slate-400 hover:text-white transition-colors">
              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.627-5.373-12-12-12z"/></svg>
           </a>
         </div>
@@ -151,74 +299,36 @@ function render() {
     </header>
 
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-8">
-      <!-- Hero Banner -->
-      <div class="relative rounded-3xl overflow-hidden mb-12 bg-indigo-900 aspect-[21/9] flex items-center shadow-2xl">
-        <img src="https://picsum.photos/id/180/1200/500" class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-40">
-        <div class="relative z-10 px-8 md:px-16 max-w-2xl">
-          <span class="text-indigo-400 font-bold tracking-wider uppercase text-sm mb-4 block">New Release</span>
-          <h2 class="text-4xl md:text-6xl font-black text-white mb-6 leading-tight">LEVEL UP YOUR<br>BREAK TIME.</h2>
-          <button onclick="openGame('geometry-dash')" class="bg-indigo-600 hover:bg-white hover:text-indigo-600 text-white font-bold py-3 px-8 rounded-2xl transition-all shadow-lg active:scale-95">Play Now</button>
-        </div>
+      <div class="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 mb-8 flex items-center space-x-3 text-amber-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <span class="text-sm font-medium">some games wont work becus the person who made this is fucking stupid</span>
       </div>
 
-      <!-- Categories -->
       <div class="mb-10 overflow-x-auto no-scrollbar pb-2">
         <div class="flex space-x-3">
           ${CATEGORIES.map(cat => `
-            <button onclick="setCategory('${cat}')" class="whitespace-nowrap px-6 py-3 rounded-2xl text-sm font-bold transition-all ${state.selectedCategory === cat ? 'bg-indigo-600 text-white shadow-lg' : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-slate-200'}">
+            <button onclick="setCategory('${cat}')" class="whitespace-nowrap px-6 py-3 rounded-2xl text-sm font-bold transition-all ${state.selectedCategory === cat ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-slate-200'}">
               ${cat}
             </button>
           `).join('')}
         </div>
       </div>
 
-      <!-- Favorites -->
-      ${favorites.length > 0 && state.searchQuery === '' && state.selectedCategory === GameCategory.ALL ? `
-        <section class="mb-12">
-          <div class="flex items-center space-x-2 mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-            <h2 class="text-2xl font-black text-slate-100 tracking-tight">Your Favorites</h2>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            ${favorites.map(g => GameCardTemplate(g)).join('')}
-          </div>
-          <div class="h-px bg-slate-800 mt-12"></div>
-        </section>
-      ` : ''}
-
-      <!-- Games Grid -->
       <section>
         <h2 class="text-2xl font-black text-slate-100 tracking-tight mb-8">
           ${state.selectedCategory === GameCategory.ALL ? 'Trending Now' : state.selectedCategory + ' Games'}
-          <span class="ml-3 text-slate-500 font-medium text-lg">(${filtered.length})</span>
         </h2>
-        
-        ${filtered.length > 0 ? `
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            ${filtered.map(g => GameCardTemplate(g)).join('')}
-          </div>
-        ` : `
-          <div class="flex flex-col items-center justify-center py-20 text-center">
-            <div class="bg-slate-800 p-6 rounded-full mb-6 text-slate-600">
-               <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            </div>
-            <h3 class="text-xl font-bold text-slate-300">No games found</h3>
-            <button onclick="setCategory('${GameCategory.ALL}')" class="mt-6 text-indigo-500 hover:text-indigo-400 font-semibold">Clear all filters</button>
-          </div>
-        `}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          ${filtered.map(g => GameCardTemplate(g)).join('')}
+        </div>
       </section>
     </main>
 
-    <footer class="bg-slate-900 py-12 border-t border-slate-800 mt-auto">
-      <div class="max-w-7xl mx-auto px-4 text-center text-slate-500 text-sm">
-        © 2024 Nexus Games Portal. Built with pure performance.
-      </div>
-    </footer>
-
-    <!-- Game Player Modal -->
     ${PlayerOverlayTemplate(selectedGame)}
+    ${InstructionsModalTemplate()}
   `;
 }
 
-// Initial render
 render();

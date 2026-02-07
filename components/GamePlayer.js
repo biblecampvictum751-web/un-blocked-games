@@ -1,8 +1,23 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 export const GamePlayer = ({ game, onClose }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const loadCountRef = useRef(0);
+
+  useEffect(() => {
+    loadCountRef.current = 0;
+  }, [game.id]);
+
+  const handleIframeLoad = () => {
+    const randomGames = ['basket-random', 'soccer-random', 'volley-random', 'boxing-random'];
+    if (randomGames.includes(game.id)) {
+      loadCountRef.current += 1;
+      if (loadCountRef.current > 1) {
+        onClose();
+      }
+    }
+  };
 
   const toggleFullScreen = () => {
     const elem = document.getElementById('game-container');
@@ -64,6 +79,7 @@ export const GamePlayer = ({ game, onClose }) => {
         <iframe 
           src={game.iframeUrl} 
           title={game.title}
+          onLoad={handleIframeLoad}
           className="w-full h-full border-0"
           allow="autoplay; fullscreen; keyboard"
           sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin"
