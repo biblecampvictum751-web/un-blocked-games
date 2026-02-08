@@ -15,12 +15,15 @@ export enum GameCategory {
   ARCADE = 'Arcade',
   RACING = 'Racing',
   SPORTS = 'Sports',
-  ADVENTURE = 'Adventure'
+  ADVENTURE = 'Adventure',
+  UTILITY = 'Utility',
+  KIDS = 'Kids'
 }
 
 export interface AppState {
   searchQuery: string;
   selectedCategory: GameCategory;
-  selectedGameId: string | null;
+  activeGameIds: string[];
+  activeTabIndex: number;
   favorites: string[];
 }

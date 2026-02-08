@@ -2,140 +2,132 @@ import { Game, GameCategory } from './types';
 
 export const GAMES: Game[] = [
   {
-    id: 'free-friend',
-    title: 'Free Friend!',
-    thumbnail: 'https://picsum.photos/id/102/400/300',
-    iframeUrl: 'https://bonzibuddy.org/download.html',
-    category: GameCategory.ARCADE,
-    description: 'Your new best friend is just a click away! Enjoy the company of a digital pal.'
-  },
-  {
-    id: 'agar-io',
-    title: 'Agar.io',
-    thumbnail: 'https://picsum.photos/id/112/400/300',
-    iframeUrl: 'https://agar.io/',
+    id: 'roblox-proxy',
+    title: 'Roblox',
+    thumbnail: 'https://picsum.photos/id/124/400/300',
+    iframeUrl: './roblox.html',
     category: GameCategory.ACTION,
-    description: 'The smash-hit game! Control your cell and eat other players to grow larger. Play with millions of players around the world!'
+    description: 'Play Roblox unblocked through our local proxy. This helps bypass simple network filters.'
   },
   {
-    id: 'deadshot-io',
-    title: 'Deadshot.io',
-    thumbnail: 'https://picsum.photos/id/111/400/300',
-    iframeUrl: 'https://deadshot.io/',
-    category: GameCategory.ACTION,
-    description: 'Deadshot.io is a fast-paced first-person shooter (FPS) game that tests your reflexes and tactical skills.'
-  },
-  {
-    id: 'more-games-portal',
-    title: 'more games cuz im too lay to get all of thears htmls',
-    thumbnail: 'https://picsum.photos/id/108/400/300',
-    iframeUrl: 'https://playgama.com/?cntscp=curated&utm_source=bing&utm_medium=cpc&utm_campaign=Bing_Search_US_eng_Desktop_General_eCPA&utm_campaign_id=522280371&utm_adgroup=general&utm_adgroup_id=1312819378275024&utm_term=unblocked+games+pc&utm_content=82051445738855&utm_target=kwd-82052466699003:loc-190&utm_network=o&utm_device=c&msclkid=68fec05226c415cbc6d8a9d595689227',
-    category: GameCategory.ADVENTURE,
-    description: 'A massive collection of more games for you to explore when one portal isn\'t enough!'
-  },
-  {
-    id: 'smash-karts',
-    title: 'Smash Karts',
-    thumbnail: 'https://picsum.photos/id/101/400/300',
-    iframeUrl: 'https://smashkarts.io/',
-    category: GameCategory.ACTION,
-    description: 'Smash Karts is a free io Multiplayer Kart Battle Arena game. Drive fast. Fire rockets. Make big explosions.'
-  },
-  {
-    id: 'soccer-random',
-    title: 'Soccer Random',
-    thumbnail: 'https://picsum.photos/id/105/400/300',
-    iframeUrl: 'https://soccerrandom.vercel.app/',
-    category: GameCategory.SPORTS,
-    description: 'Soccer Random is a 2-player physics-based soccer game. Jump and kick the ball to score!'
-  },
-  {
-    id: 'basket-random',
-    title: 'Basket Random',
-    thumbnail: 'https://picsum.photos/id/26/400/300',
-    iframeUrl: 'https://basketrandom.vercel.app/',
-    category: GameCategory.SPORTS,
-    description: 'Basket Random is a 2-player arcade game with ragdoll physics. Jump and fight for the ball through various fields.'
-  },
-  {
-    id: 'volley-random',
-    title: 'Volley Random',
-    thumbnail: 'https://picsum.photos/id/106/400/300',
-    iframeUrl: 'https://volleyrandom.vercel.app/',
-    category: GameCategory.SPORTS,
-    description: 'Volley Random is a fun 2-player volleyball game with ragdoll physics. Hit the ball to the opponent\'s side!'
-  },
-  {
-    id: 'boxing-random',
-    title: 'Boxing Random',
-    thumbnail: 'https://picsum.photos/id/107/400/300',
-    iframeUrl: 'https://boxingrandom.vercel.app/',
-    category: GameCategory.SPORTS,
-    description: 'Boxing Random features ragdoll-style boxing matches. Try to hit your opponent\'s head to win!'
-  },
-  {
-    id: '2048',
-    title: '2048',
-    thumbnail: 'https://picsum.photos/id/1/400/300',
-    iframeUrl: 'https://play2048.co/',
+    id: 'infinite-craft',
+    title: 'Infinite Craft',
+    thumbnail: 'https://picsum.photos/id/116/400/300',
+    iframeUrl: './infinite-craft.html',
     category: GameCategory.PUZZLE,
-    description: 'Join the numbers and get to the 2048 tile!'
+    description: 'Craft elements including Water (💧), Fire (🔥), Wind (🌬️), and Earth (🌍) locally in this portal.'
   },
   {
-    id: 'geometry-dash',
-    title: 'Geometry Dash Lite',
-    thumbnail: 'https://picsum.photos/id/2/400/300',
-    iframeUrl: 'https://geometrydash.io/',
+    id: 'subway-surfers',
+    title: 'Subway Surfers',
+    thumbnail: 'https://picsum.photos/id/127/400/300',
+    iframeUrl: './subway-surfers.html',
     category: GameCategory.ARCADE,
-    description: 'Jump and fly your way through danger in this rhythm-based action platformer!'
+    description: 'Dodge trains and collect coins in this local HTML version featuring the San Francisco update.'
   },
   {
-    id: 'minecraft-classic',
-    title: 'Minecraft Classic',
-    thumbnail: 'https://picsum.photos/id/3/400/300',
-    iframeUrl: 'https://classic.minecraft.net/',
-    category: GameCategory.ADVENTURE,
-    description: 'The original sandbox building game.'
+    id: '1v1-lol',
+    title: '1v1.LOL',
+    thumbnail: 'https://picsum.photos/id/131/400/300',
+    iframeUrl: './1v1-lol.html',
+    category: GameCategory.ACTION,
+    description: 'Build and shoot locally. Optimized for performance and bypassing filters.'
   },
   {
-    id: 'moto-x3m',
-    title: 'Moto X3M',
-    thumbnail: 'https://picsum.photos/id/4/400/300',
-    iframeUrl: 'https://moto-x3m.io/',
-    category: GameCategory.RACING,
-    description: 'Experience pure racing fun with awesome levels and stunts.'
+    id: 'run-3',
+    title: 'Run 3',
+    thumbnail: 'https://picsum.photos/id/125/400/300',
+    iframeUrl: './run-3.html',
+    category: GameCategory.ACTION,
+    description: 'A fast-paced runner game set in space. Navigate through tunnels and avoid falling into the void.'
   },
   {
-    id: 'flappy-bird',
-    title: 'Flappy Bird',
-    thumbnail: 'https://picsum.photos/id/5/400/300',
-    iframeUrl: 'https://flappybird.io/',
-    category: GameCategory.ARCADE,
-    description: 'Navigate through the green pipes without crashing.'
-  },
-  {
-    id: 'tetris',
-    title: 'Tetris',
-    thumbnail: 'https://picsum.photos/id/6/400/300',
-    iframeUrl: 'https://tetris.com/play-tetris',
-    category: GameCategory.PUZZLE,
-    description: 'The world-famous block-stacking puzzle game.'
-  },
-  {
-    id: 'basketball-stars',
-    title: 'Basketball Stars',
-    thumbnail: 'https://picsum.photos/id/7/400/300',
-    iframeUrl: 'https://basketballstars.io/',
+    id: 'retro-bowl',
+    title: 'Retro Bowl',
+    thumbnail: 'https://picsum.photos/id/126/400/300',
+    iframeUrl: './retro-bowl.html',
     category: GameCategory.SPORTS,
-    description: 'Show off your skills and move on to the championship.'
+    description: 'The perfect game for the armchair quarterback. Can you manage your team to the ultimate prize?'
   },
   {
-    id: 'drift-hunters',
-    title: 'Drift Hunters',
-    thumbnail: 'https://picsum.photos/id/8/400/300',
-    iframeUrl: 'https://drift-hunters.io/',
-    category: GameCategory.RACING,
-    description: 'The ultimate drifting game with realistic physics.'
+    id: 'cookie-clicker',
+    title: 'Cookie Clicker',
+    thumbnail: 'https://picsum.photos/id/128/400/300',
+    iframeUrl: './cookie-clicker.html',
+    category: GameCategory.ARCADE,
+    description: 'Click the cookie and build your empire in this local version of the ultimate idle game.'
+  },
+  {
+    id: 'slope-game',
+    title: 'Slope',
+    thumbnail: 'https://picsum.photos/id/121/400/300',
+    iframeUrl: './slope-game.html',
+    category: GameCategory.ACTION,
+    description: 'A fast-paced 3D running game. Control a ball rolling down a slope and avoid obstacles.'
+  },
+  {
+    id: 'bitlife',
+    title: 'BitLife',
+    thumbnail: 'https://picsum.photos/id/129/400/300',
+    iframeUrl: './bitlife.html',
+    category: GameCategory.ADVENTURE,
+    description: 'Live your life how you want to in this local life simulator.'
+  },
+  {
+    id: 'shell-shockers',
+    title: 'Shell Shockers',
+    thumbnail: 'https://picsum.photos/id/130/400/300',
+    iframeUrl: './shell-shockers.html',
+    category: GameCategory.ACTION,
+    description: 'The world\'s most popular egg-based FPS.'
+  },
+  {
+    id: 'paper-io-2',
+    title: 'Paper.io 2',
+    thumbnail: 'https://picsum.photos/id/132/400/300',
+    iframeUrl: './paper-io-2.html',
+    category: GameCategory.ARCADE,
+    description: 'Capture as much territory as possible and become the king of the map!'
+  },
+  {
+    id: 'google-search',
+    title: 'Google',
+    thumbnail: 'https://picsum.photos/id/119/400/300',
+    iframeUrl: 'https://www.google.com/search?igu=1',
+    category: GameCategory.UTILITY,
+    description: 'The world\'s most popular search engine, optimized for iframing in this portal.'
+  },
+  {
+    id: 'bing-search',
+    title: 'Bing',
+    thumbnail: 'https://picsum.photos/id/122/400/300',
+    iframeUrl: 'https://www.bing.com',
+    category: GameCategory.UTILITY,
+    description: 'Microsoft\'s search engine.'
+  },
+  {
+    id: 'yahoo-search',
+    title: 'Yahoo',
+    thumbnail: 'https://picsum.photos/id/123/400/300',
+    iframeUrl: 'https://www.yahoo.com',
+    category: GameCategory.UTILITY,
+    description: 'Yahoo search and news portal.'
+  },
+  {
+    id: 'pbs-kids',
+    title: 'PBS Kids',
+    thumbnail: 'https://picsum.photos/id/120/400/300',
+    iframeUrl: 'https://pbskids.org/',
+    category: GameCategory.KIDS,
+    description: 'Educational games and videos from your favorite PBS KIDS shows.'
+  },
+  {
+    id: 'ai-studio',
+    title: 'Google AI Studio',
+    thumbnail: 'https://picsum.photos/id/115/400/300',
+    iframeUrl: 'https://aistudio.google.com',
+    category: GameCategory.ADVENTURE,
+    description: 'Explore the cutting edge of AI development.'
   }
 ];
 

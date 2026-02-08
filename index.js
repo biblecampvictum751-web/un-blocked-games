@@ -81,6 +81,10 @@ window.closeGame = () => {
   document.body.style.overflow = 'auto';
 };
 
+window.openInNewTabDirect = (url) => {
+  window.open(url, '_blank');
+};
+
 window.handleIframeLoad = (id) => {
   const randomGames = ['basket-random', 'soccer-random', 'volley-random', 'boxing-random'];
   if (randomGames.includes(id)) {
@@ -200,6 +204,12 @@ function PlayerOverlayTemplate(game) {
           </div>
         </div>
         <div class="flex items-center space-x-3">
+          <button onclick="openInNewTabDirect('${game.iframeUrl}')" class="flex items-center space-x-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg font-medium transition-colors border border-slate-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+            <span class="hidden sm:inline">Open in New Tab</span>
+          </button>
           <button onclick="toggleFullScreen()" class="flex items-center space-x-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-medium transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />

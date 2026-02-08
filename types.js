@@ -6,5 +6,7 @@ export const GameCategory = {
   ARCADE: 'Arcade',
   RACING: 'Racing',
   SPORTS: 'Sports',
-  ADVENTURE: 'Adventure'
+  ADVENTURE: 'Adventure',
+  UTILITY: 'Utility',
+  KIDS: 'Kids'
 };

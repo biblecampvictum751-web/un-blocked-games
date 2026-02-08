@@ -7,7 +7,8 @@ import { GamePlayer } from './components/GamePlayer';
 const App: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<GameCategory>(GameCategory.ALL);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedGame, setSelectedGame] = useState<Game | null>(null);
+  const [activeGameIds, setActiveGameIds] = useState<string[]>([]);
+  const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
   const [favorites, setFavorites] = useState<string[]>([]);
 
   // Load favorites from local storage
@@ -32,6 +33,28 @@ const App: React.FC = () => {
     localStorage.setItem('nexus_favorites', JSON.stringify(newFavorites));
   };
 
+  const handleOpenGame = (game: Game) => {
+    const existingIndex = activeGameIds.indexOf(game.id);
+    if (existingIndex !== -1) {
+      setActiveTabIndex(existingIndex);
+    } else {
+      setActiveGameIds(prev => [...prev, game.id]);
+      setActiveTabIndex(activeGameIds.length);
+    }
+  };
+
+  const handleCloseTab = (index: number) => {
+    if (index === -1) {
+      setActiveGameIds([]);
+      return;
+    }
+    const newIds = activeGameIds.filter((_, i) => i !== index);
+    setActiveGameIds(newIds);
+    if (activeTabIndex >= newIds.length) {
+      setActiveTabIndex(Math.max(0, newIds.length - 1));
+    }
+  };
+
   const filteredGames = useMemo(() => {
     return GAMES.filter(game => {
       const matchesCategory = selectedCategory === GameCategory.ALL || game.category === selectedCategory;
@@ -39,6 +62,10 @@ const App: React.FC = () => {
       return matchesCategory && matchesSearch;
     });
   }, [selectedCategory, searchQuery]);
+
+  const activeGames = useMemo(() => {
+    return activeGameIds.map(id => GAMES.find(g => g.id === id)!).filter(Boolean);
+  }, [activeGameIds]);
 
   const favoriteGames = useMemo(() => {
     return GAMES.filter(game => favorites.includes(game.id));
@@ -79,6 +106,14 @@ const App: React.FC = () => {
           </div>
 
           <div className="flex items-center space-x-4">
+            {activeGameIds.length > 0 && (
+              <button 
+                onClick={() => setActiveTabIndex(activeTabIndex)}
+                className="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold animate-pulse"
+              >
+                OPEN WORKSPACE ({activeGameIds.length})
+              </button>
+            )}
             <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.627-5.373-12-12-12z"/>
@@ -92,20 +127,21 @@ const App: React.FC = () => {
         {/* Banner Section */}
         <div className="relative rounded-3xl overflow-hidden mb-12 bg-indigo-900 aspect-[21/9] flex items-center shadow-2xl shadow-indigo-500/10">
           <img 
-            src="https://picsum.photos/id/180/1200/500" 
-            alt="Hero Banner"
+            src="https://picsum.photos/id/116/1200/500" 
+            alt="Infinite Craft Elements"
             className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-40"
           />
           <div className="relative z-10 px-8 md:px-16 max-w-2xl">
-            <span className="text-indigo-400 font-bold tracking-wider uppercase text-sm mb-4 block">Hot Topic</span>
+            <span className="text-indigo-400 font-bold tracking-wider uppercase text-sm mb-4 block">New Favorite</span>
             <h2 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight">
-              GET A NEW <br/> FREE FRIEND!
+              CRAFT ELEMENTS <br/> 💧 🔥 🌬️ 🌍
             </h2>
+            <p className="text-slate-300 mb-6 text-lg max-w-md">Discover the infinite possibilities of combination in our latest puzzle addition.</p>
             <button 
-              onClick={() => setSelectedGame(GAMES[0])}
+              onClick={() => handleOpenGame(GAMES.find(g => g.id === 'infinite-craft') || GAMES[0])}
               className="bg-indigo-600 hover:bg-white hover:text-indigo-600 text-white font-bold py-3 px-8 rounded-2xl transition-all shadow-lg shadow-indigo-600/20 active:scale-95"
             >
-              Meet Them Now
+              Play Infinite Craft
             </button>
           </div>
         </div>
@@ -137,7 +173,7 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Favorites section (if any) */}
+        {/* Favorites section */}
         {favoriteGames.length > 0 && searchQuery === '' && selectedCategory === GameCategory.ALL && (
           <section className="mb-12">
             <div className="flex items-center space-x-2 mb-6">
@@ -151,7 +187,7 @@ const App: React.FC = () => {
                 <GameCard 
                   key={game.id} 
                   game={game} 
-                  onClick={setSelectedGame}
+                  onClick={handleOpenGame}
                   isFavorite={favorites.includes(game.id)}
                   onToggleFavorite={toggleFavorite}
                 />
@@ -176,7 +212,7 @@ const App: React.FC = () => {
                 <GameCard 
                   key={game.id} 
                   game={game} 
-                  onClick={setSelectedGame}
+                  onClick={handleOpenGame}
                   isFavorite={favorites.includes(game.id)}
                   onToggleFavorite={toggleFavorite}
                 />
@@ -191,12 +227,6 @@ const App: React.FC = () => {
               </div>
               <h3 className="text-xl font-bold text-slate-300">No games found</h3>
               <p className="text-slate-500 mt-2">Try adjusting your search or category filters.</p>
-              <button 
-                onClick={() => {setSearchQuery(''); setSelectedCategory(GameCategory.ALL);}}
-                className="mt-6 text-indigo-500 hover:text-indigo-400 font-semibold"
-              >
-                Clear all filters
-              </button>
             </div>
           )}
         </section>
@@ -221,21 +251,17 @@ const App: React.FC = () => {
               © 2024 Nexus Games Portal. Built for enthusiasts.<br/>
               <span className="opacity-50 text-xs italic">some games wont work becus the person who made this is fucking stupid</span>
             </div>
-
-            <div className="flex space-x-6 mt-6 md:mt-0">
-              <a href="#" className="text-slate-500 hover:text-slate-300 transition-colors">Terms</a>
-              <a href="#" className="text-slate-500 hover:text-slate-300 transition-colors">Privacy</a>
-              <a href="#" className="text-slate-500 hover:text-slate-300 transition-colors">Contact</a>
-            </div>
           </div>
         </div>
       </footer>
 
-      {/* Game Overlay Player */}
-      {selectedGame && (
+      {/* Game Multi-Tab Player */}
+      {activeGames.length > 0 && (
         <GamePlayer 
-          game={selectedGame} 
-          onClose={() => setSelectedGame(null)} 
+          games={activeGames} 
+          activeTabIndex={activeTabIndex}
+          onSwitchTab={setActiveTabIndex}
+          onCloseTab={handleCloseTab} 
         />
       )}
     </div>

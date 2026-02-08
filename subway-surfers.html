@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subway Surfers | Unblocked</title>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #231f20; color: white; font-family: sans-serif; }
+        #loader { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #231f20; z-index: 100; }
+        #game-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+        canvas { width: 100%; height: 100%; display: block; }
+        .spinner { border: 4px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top: 4px solid #fff; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #slideshow-top-container { text-align: center; }
+        #progress-bar { width: 200px; height: 10px; background: #444; border-radius: 5px; margin: 10px auto; overflow: hidden; }
+        #progress-fill { height: 100%; background: #5cf; width: 0%; transition: width 0.3s; }
+        iframe { width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body>
+    <!-- User provided snippet structure -->
+    <div id="loader">
+        <div id="slideshow">
+            <div id="slideshow-top" class="active">
+                <div id="slideshow-top-container">
+                    <div id="game-title">Subway Surfers: San Francisco</div>
+                    <div id="progress-spinner" class="spinner"></div>
+                    <div id="progress-container">
+                        <div id="progress-bar"><div id="progress-fill" style="width: 61%;"></div></div>
+                        <div id="progress-amount">Loading Assets...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fallback to iframe if local scripts (not provided) fail to initialize -->
+    <div id="game-container">
+        <iframe src="https://subwaysurfers.io/" allow="autoplay; fullscreen; keyboard"></iframe>
+    </div>
+
+    <!-- The requested script tags (placeholders as files aren't physically present) -->
+    <script src="master-loader.js"></script>
+    <script src="poki-sdk.js"></script>
+    <script src="https://classroom7x.io/games/subway-surfers/unity.js"></script>
+    <script src="UnityLoader.2019.2.js"></script>
+    <script>
+        // Simple script to hide loader after a few seconds since we are using an iframe fallback
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+            }, 2500);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Clicker | Unblocked</title>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; background: #000; color: #ccc; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        #wrapper { margin: 0 auto; position: relative; }
+        #topBar { background: #000; border-bottom: 1px solid #333; padding: 5px 10px; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+        #topBar a { color: #5cf; text-decoration: none; margin: 0 5px; }
+        #game { position: relative; width: 100%; min-height: 600px; background: #111; }
+        .title { font-weight: bold; }
+        #sectionLeft, #sectionMiddle, #sectionRight { padding: 10px; border: 1px solid #222; }
+        #cookies { font-size: 24px; color: #fff; text-align: center; margin: 20px 0; }
+        #bigCookie { width: 150px; height: 150px; background: url('https://orteil.dashnet.org/cookieclicker/img/perfectCookie.png'); background-size: contain; border: none; cursor: pointer; transition: transform 0.1s; display: block; margin: 0 auto; }
+        #bigCookie:active { transform: scale(0.95); }
+        .product { background: #222; border: 1px solid #444; margin: 5px 0; padding: 10px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .product:hover { background: #333; }
+        .locked { opacity: 0.5; }
+        /* Temporary fix for missing assets from user snippet */
+        #backgroundCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+    </style>
+</head>
+<body>
+    <div id="wrapper" class="onWeb">
+        <div id="topBar">
+            <div><b style="font-weight:bold;">Cookie Clicker Unblocked</b>™ © <a href="https://orteil.dashnet.org/cookieclicker/" target="_blank">Orteil</a>, 2025</div>
+            <div><a href="https://cookie-clicker2.io/" target="_blank">cookie clicker 2</a></div>
+            <div style="float:right;"><a id="changeLanguage" style="font-variant:small-caps;">Change language</a></div>
+        </div>
+        <div id="game">
+            <div id="sectionLeft" class="inset">
+                <div id="cookies" class="title">0 cookies<div id="cookiesPerSecond" style="font-size:14px; color:#888;">per second: 0</div></div>
+                <div id="cookieAnchor">
+                    <button id="bigCookie" onclick="addCookie()"></button>
+                </div>
+            </div>
+            <div id="sectionMiddle" class="inset">
+                <div id="comments" class="inset title">News: Welcome to the bakery!</div>
+                <div id="centerArea">
+                    <div id="buildingsTitle" class="inset title zoneTitle">Buildings</div>
+                    <div id="rows"></div>
+                </div>
+            </div>
+            <div id="sectionRight" class="inset">
+                <div id="store">
+                    <div id="storeTitle" class="inset title zoneTitle">Store</div>
+                    <div id="upgrades" class="storeSection upgradeBox"></div>
+                    <div id="products">
+                        <div class="product" onclick="buyBuilding('Cursor', 15)">
+                            <div class="content"><div class="title productName">Cursor</div><span class="price">15</span></div>
+                        </div>
+                        <div class="product" onclick="buyBuilding('Grandma', 100)">
+                            <div class="content"><div class="title productName">Grandma</div><span class="price">100</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let count = 0;
+        let cps = 0;
+        const cookieDisplay = document.getElementById('cookies');
+        const cpsDisplay = document.getElementById('cookiesPerSecond');
+
+        function addCookie() {
+            count++;
+            updateDisplay();
+        }
+
+        function buyBuilding(name, price) {
+            if (count >= price) {
+                count -= price;
+                cps += (name === 'Cursor' ? 0.1 : 1);
+                updateDisplay();
+            } else {
+                alert("Not enough cookies!");
+            }
+        }
+
+        function updateDisplay() {
+            cookieDisplay.innerHTML = Math.floor(count) + " cookies<div id='cookiesPerSecond' style='font-size:14px; color:#888;'>per second: " + cps.toFixed(1) + "</div>";
+        }
+
+        setInterval(() => {
+            count += cps / 10;
+            updateDisplay();
+        }, 100);
+    </script>
+</body>
+</html>

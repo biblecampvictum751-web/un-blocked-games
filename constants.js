@@ -5,145 +5,99 @@ export const GameCategory = {
   ARCADE: 'Arcade',
   RACING: 'Racing',
   SPORTS: 'Sports',
-  ADVENTURE: 'Adventure'
+  ADVENTURE: 'Adventure',
+  UTILITY: 'Utility',
+  KIDS: 'Kids'
 };
 
 export const GAMES = [
   {
-    id: 'free-friend',
-    title: 'Free Friend!',
-    thumbnail: 'https://picsum.photos/id/102/400/300',
-    iframeUrl: 'https://bonzibudbuddy.org/download.html',
-    category: GameCategory.ARCADE,
-    description: 'Your new best friend is just a click away! Enjoy the company of a digital pal.'
-  },
-  {
-    id: 'agar-io',
-    title: 'Agar.io',
-    thumbnail: 'https://picsum.photos/id/112/400/300',
-    iframeUrl: 'https://agar.io/',
+    id: 'roblox-proxy',
+    title: 'Roblox',
+    thumbnail: 'https://picsum.photos/id/124/400/300',
+    iframeUrl: './roblox.html',
     category: GameCategory.ACTION,
-    description: 'The smash-hit game! Control your cell and eat other players to grow larger. Play with millions of players around the world!'
+    description: 'Play Roblox unblocked through our local proxy.'
   },
   {
-    id: 'deadshot-io',
-    title: 'Deadshot.io',
-    thumbnail: 'https://picsum.photos/id/111/400/300',
-    iframeUrl: 'https://deadshot.io/',
-    category: GameCategory.ACTION,
-    description: 'Deadshot.io is a fast-paced first-person shooter (FPS) game that tests your reflexes and tactical skills.'
-  },
-  {
-    id: 'more-games-portal',
-    title: 'more games cuz im too lay to get all of thears htmls',
-    thumbnail: 'https://picsum.photos/id/108/400/300',
-    iframeUrl: 'https://playgama.com/?cntscp=curated&utm_source=bing&utm_medium=cpc&utm_campaign=Bing_Search_US_eng_Desktop_General_eCPA&utm_campaign_id=522280371&utm_adgroup=general&utm_adgroup_id=1312819378275024&utm_term=unblocked+games+pc&utm_content=82051445738855&utm_target=kwd-82052466699003:loc-190&utm_network=o&utm_device=c&msclkid=68fec05226c415cbc6d8a9d595689227',
-    category: GameCategory.ADVENTURE,
-    description: 'A massive collection of more games for you to explore when one portal isn\'t enough!'
-  },
-  {
-    id: 'smash-karts',
-    title: 'Smash Karts',
-    thumbnail: 'https://picsum.photos/id/101/400/300',
-    iframeUrl: 'https://smashkarts.io/',
-    category: GameCategory.ACTION,
-    description: 'Smash Karts is a free io Multiplayer Kart Battle Arena game. Drive fast. Fire rockets. Make big explosions.'
-  },
-  {
-    id: 'soccer-random',
-    title: 'Soccer Random',
-    thumbnail: 'https://picsum.photos/id/105/400/300',
-    iframeUrl: 'https://soccerrandom.vercel.app/',
-    category: GameCategory.SPORTS,
-    description: 'Soccer Random is a 2-player physics-based soccer game. Jump and kick the ball to score!'
-  },
-  {
-    id: 'basket-random',
-    title: 'Basket Random',
-    thumbnail: 'https://picsum.photos/id/26/400/300',
-    iframeUrl: 'https://basketrandom.vercel.app/',
-    category: GameCategory.SPORTS,
-    description: 'Basket Random is a 2-player arcade game with ragdoll physics. Jump and fight for the ball through various fields.'
-  },
-  {
-    id: 'volley-random',
-    title: 'Volley Random',
-    thumbnail: 'https://picsum.photos/id/106/400/300',
-    iframeUrl: 'https://volleyrandom.vercel.app/',
-    category: GameCategory.SPORTS,
-    description: 'Volley Random is a fun 2-player volleyball game with ragdoll physics. Hit the ball to the opponent\'s side!'
-  },
-  {
-    id: 'boxing-random',
-    title: 'Boxing Random',
-    thumbnail: 'https://picsum.photos/id/107/400/300',
-    iframeUrl: 'https://boxingrandom.vercel.app/',
-    category: GameCategory.SPORTS,
-    description: 'Boxing Random features ragdoll-style boxing matches. Try to hit your opponent\'s head to win!'
-  },
-  {
-    id: '2048',
-    title: '2048',
-    thumbnail: 'https://picsum.photos/id/1/400/300',
-    iframeUrl: 'https://play2048.co/',
+    id: 'infinite-craft',
+    title: 'Infinite Craft',
+    thumbnail: 'https://picsum.photos/id/116/400/300',
+    iframeUrl: './infinite-craft.html',
     category: GameCategory.PUZZLE,
-    description: 'Join the numbers and get to the 2048 tile!'
+    description: 'Craft elements including Water (💧), Fire (🔥), Wind (🌬️), and Earth (🌍) locally.'
   },
   {
-    id: 'geometry-dash',
-    title: 'Geometry Dash Lite',
-    thumbnail: 'https://picsum.photos/id/2/400/300',
-    iframeUrl: 'https://geometrydash.io/',
+    id: 'subway-surfers',
+    title: 'Subway Surfers',
+    thumbnail: 'https://picsum.photos/id/127/400/300',
+    iframeUrl: './subway-surfers.html',
     category: GameCategory.ARCADE,
-    description: 'Jump and fly your way through danger in this rhythm-based action platformer!'
+    description: 'Dodge trains and collect coins in this local HTML version.'
   },
   {
-    id: 'minecraft-classic',
-    title: 'Minecraft Classic',
-    thumbnail: 'https://picsum.photos/id/3/400/300',
-    iframeUrl: 'https://classic.minecraft.net/',
-    category: GameCategory.ADVENTURE,
-    description: 'The original sandbox building game.'
+    id: '1v1-lol',
+    title: '1v1.LOL',
+    thumbnail: 'https://picsum.photos/id/131/400/300',
+    iframeUrl: './1v1-lol.html',
+    category: GameCategory.ACTION,
+    description: 'Build and shoot locally.'
   },
   {
-    id: 'moto-x3m',
-    title: 'Moto X3M',
-    thumbnail: 'https://picsum.photos/id/4/400/300',
-    iframeUrl: 'https://moto-x3m.io/',
-    category: GameCategory.RACING,
-    description: 'Experience pure racing fun with awesome levels and stunts.'
+    id: 'run-3',
+    title: 'Run 3',
+    thumbnail: 'https://picsum.photos/id/125/400/300',
+    iframeUrl: './run-3.html',
+    category: GameCategory.ACTION,
+    description: 'Navigate through tunnels in space.'
   },
   {
-    id: 'flappy-bird',
-    title: 'Flappy Bird',
-    thumbnail: 'https://picsum.photos/id/5/400/300',
-    iframeUrl: 'https://flappybird.io/',
-    category: GameCategory.ARCADE,
-    description: 'Navigate through the green pipes without crashing.'
-  },
-  {
-    id: 'tetris',
-    title: 'Tetris',
-    thumbnail: 'https://picsum.photos/id/6/400/300',
-    iframeUrl: 'https://tetris.com/play-tetris',
-    category: GameCategory.PUZZLE,
-    description: 'The world-famous block-stacking puzzle game.'
-  },
-  {
-    id: 'basketball-stars',
-    title: 'Basketball Stars',
-    thumbnail: 'https://picsum.photos/id/7/400/300',
-    iframeUrl: 'https://basketballstars.io/',
+    id: 'retro-bowl',
+    title: 'Retro Bowl',
+    thumbnail: 'https://picsum.photos/id/126/400/300',
+    iframeUrl: './retro-bowl.html',
     category: GameCategory.SPORTS,
-    description: 'Show off your skills and move on to the championship.'
+    description: 'Armchair quarterback team management game.'
   },
   {
-    id: 'drift-hunters',
-    title: 'Drift Hunters',
-    thumbnail: 'https://picsum.photos/id/8/400/300',
-    iframeUrl: 'https://drift-hunters.io/',
-    category: GameCategory.RACING,
-    description: 'The ultimate drifting game with realistic physics.'
+    id: 'cookie-clicker',
+    title: 'Cookie Clicker',
+    thumbnail: 'https://picsum.photos/id/128/400/300',
+    iframeUrl: './cookie-clicker.html',
+    category: GameCategory.ARCADE,
+    description: 'Click the cookie and build your empire.'
+  },
+  {
+    id: 'slope-game',
+    title: 'Slope',
+    thumbnail: 'https://picsum.photos/id/121/400/300',
+    iframeUrl: './slope-game.html',
+    category: GameCategory.ACTION,
+    description: 'Control a ball rolling down a slope.'
+  },
+  {
+    id: 'bitlife',
+    title: 'BitLife',
+    thumbnail: 'https://picsum.photos/id/129/400/300',
+    iframeUrl: './bitlife.html',
+    category: GameCategory.ADVENTURE,
+    description: 'Live your life how you want to locally.'
+  },
+  {
+    id: 'shell-shockers',
+    title: 'Shell Shockers',
+    thumbnail: 'https://picsum.photos/id/130/400/300',
+    iframeUrl: './shell-shockers.html',
+    category: GameCategory.ACTION,
+    description: 'Egg-based FPS action.'
+  },
+  {
+    id: 'paper-io-2',
+    title: 'Paper.io 2',
+    thumbnail: 'https://picsum.photos/id/132/400/300',
+    iframeUrl: './paper-io-2.html',
+    category: GameCategory.ARCADE,
+    description: 'Capture territory to become king.'
   }
 ];
 
